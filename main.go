@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-
 var (
 	bus chan int
 )
@@ -27,7 +26,7 @@ func compute(value int) {
 }
 
 type Schedule struct {
-	Url	string `json:"url"`
+	Url string `json:"url"`
 }
 
 func loadSchedule() {
@@ -45,7 +44,6 @@ func loadSchedule() {
 	}
 	fmt.Println(schedule)
 }
-
 
 func schedule(name string, seconds int) {
 	var ticker *time.Ticker = time.NewTicker(5 * time.Second)
