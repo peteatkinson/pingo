@@ -29,6 +29,12 @@ type Schedule struct {
 	Url string `json:"url"`
 }
 
+func loadSchedulers(schedules []Schedule) {
+	for _, schedule = range schedules {
+		
+	}
+}
+
 func loadSchedule() {
 	var schedule []Schedule
 
