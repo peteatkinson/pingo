@@ -4,17 +4,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"time"
 )
 
 var (
-	bus chan int
+	bus chan string
 )
 
 func main() {
 	// schedule("Test 1", 60)
 	// schedule("Test 2", 60)
-	loadSchedule()
+
+	schedules, err := loadSchedulesConfig()
+
+	if err != nil {
+		os.Exit(0)
+	}
+
+	bus = make(chan string, len(schedules))
+	runSchedules(schedules)
+
 	fmt.Scanln()
 }
 
@@ -26,44 +36,62 @@ func compute(value int) {
 }
 
 type Schedule struct {
-	Url string `json:"url"`
+	Url       string `json:"url"`
+	Frequency int    `json:"frequency"`
 }
 
-func loadSchedulers(schedules []Schedule) {
-	for _, schedule = range schedules {
-		
+func runSchedules(schedules []Schedule) {
+	go handleSchedulers()
+
+	for _, s := range schedules {
+		schedule(s.Url, s.Frequency)
 	}
 }
 
-func loadSchedule() {
-	var schedule []Schedule
+func loadSchedulesConfig() ([]Schedule, error) {
+	var schedules []Schedule
 
 	data, err := ioutil.ReadFile("./schedule.json")
 
 	if err != nil {
-		fmt.Println("Error reading JSON file")
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, &schedule)
+	err = json.Unmarshal(data, &schedules)
+
 	if err != nil {
-		fmt.Println("Error unmarshing JSON file")
+		return nil, err
 	}
-	fmt.Println(schedule)
+	return schedules, nil
 }
 
-func schedule(name string, seconds int) {
-	var ticker *time.Ticker = time.NewTicker(5 * time.Second)
+func schedule(url string, frequency int) {
+	var ticker *time.Ticker = time.NewTicker(time.Duration(frequency) * time.Second)
 	die := make(chan struct{})
 
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println(name, ticker.C)
+				fmt.Println("Tick!", url)
+				bus <- url
 			case <-die:
 				ticker.Stop()
 				return
 			}
 		}
 	}()
+}
+
+func handleSchedule(url string) {
+	fmt.Println(url)
+}
+
+func handleSchedulers() {
+	for {
+		select {
+		case url := <-bus:
+			go handleSchedule(url)
+		}
+	}
 }
