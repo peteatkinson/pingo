@@ -16,16 +16,14 @@ func main() {
 	// schedule("Test 2", 60)
 
 	serviceConfigs := core.LoadServiceConfig()
-	
+
 	if len(serviceConfigs) > 0 {
 		channel = make(chan *service.HeartbeatMonitor, len(serviceConfigs))
 		TickOverHeartbeatMonitors(serviceConfigs)
 	}
 
-
 	fmt.Scanln()
 }
-
 
 func TickOverHeartbeatMonitors(schedules []core.ServiceConfig) {
 	go SetupHeartbeatListeners()
@@ -36,7 +34,6 @@ func TickOverHeartbeatMonitors(schedules []core.ServiceConfig) {
 		go monitor.Tick(channel)
 	}
 }
-
 
 // func handleSchedule(config core.ServiceConfig) {
 // 	fmt.Println(config)

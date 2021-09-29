@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 )
 
-func LoadServiceConfig() ([]ServiceConfig){
+func LoadServiceConfig() []ServiceConfig {
 	var serviceConfigs []ServiceConfig
 
 	data, err := ioutil.ReadFile("./schedule.json")

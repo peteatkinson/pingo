@@ -8,7 +8,6 @@ import (
 	"github.com/rwxpeter/statusify/core"
 )
 
-
 func GetServiceStatus(url string, threshold time.Duration) (s core.ServiceStatus) {
 	timeStart := time.Now()
 
@@ -16,7 +15,7 @@ func GetServiceStatus(url string, threshold time.Duration) (s core.ServiceStatus
 
 	if err != nil {
 		fmt.Println(response)
-		return core.NewServiceDeadServiceStatus();
+		return core.NewServiceDeadServiceStatus()
 	}
 
 	duration := time.Since(timeStart)
@@ -35,7 +34,7 @@ func GetServiceStatus(url string, threshold time.Duration) (s core.ServiceStatus
 	return core.NewServiceDeadServiceStatus()
 }
 
-func execute(url string) (*http.Response, error){
+func execute(url string) (*http.Response, error) {
 	client := getHttpClient()
 	response, err := client.Do(createRequest(url))
 	if err != nil {

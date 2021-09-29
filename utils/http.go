@@ -11,5 +11,3 @@ func IsTls() {
 func IsDNS() {
 
 }
-
-
