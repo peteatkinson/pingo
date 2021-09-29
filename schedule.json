@@ -1,5 +1,4 @@
 [
-  {"url": "http://google.com", "frequency": 5},
-  {"url": "https://amazon.com", "frequency": 10},
-  {"url": "https://firefox.com", "frequency": 1}
+  {"url": "https://google.com", "frequency": 2, "duration_threshold": 200},
+  {"url": "https://peteratkinson.co.uk", "frequency": 2, "duration_threshold": 200}
 ]
